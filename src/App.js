@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import AddBook from "./pages/AddBook";
 import NavBar from "./components/NavBar";
 import { Route, Switch } from "react-router-dom";
+import User from "./pages/User";
 
-// <Route exact path="/rooms/:slug" component={SingleRoom} />
 function App() {
   return (
     <>
@@ -14,6 +14,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/add/book" component={AddBook} />
         <Route exact path="/borrow/book/:_id" component={Home} />
+        <Route exact path="/login/user" component={User} />
       </Switch>
     </>
   );

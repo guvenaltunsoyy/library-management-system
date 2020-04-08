@@ -73,7 +73,7 @@ export default class BookSearch extends Component {
   };
   renderTableData = () => {
     return this.state.books.map((book, index) => {
-      const { _id, title, author, quantity, isbnNumber } = book; //destructuring
+      const { _id, title, author, quantity, isbnNumber } = book;
       return (
         <tr key={_id}>
           <td>{title}</td>
