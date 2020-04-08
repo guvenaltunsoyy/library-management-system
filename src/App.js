@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import UserPage from "./pages/User";
 import AddBook from "./pages/AddBook";
 import NavBar from "./components/NavBar";
 import { Route, Switch } from "react-router-dom";
@@ -14,6 +13,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/add/book" component={AddBook} />
+        <Route exact path="/borrow/book/:_id" component={Home} />
       </Switch>
     </>
   );
