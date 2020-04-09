@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Banner from "../components/Banner";
+import API from "../utils/api";
 
 export default function User() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   async function login() {
-    // call service
-    console.log(username, password);
+    var result = await API.post("login", {
+      mail: username,
+      password: password,
+    });
+    console.log(result);
+
+    if (result.data.user) {
+      //alert("Hoşgeldiniz!");
+      sessionStorage.setItem("user", JSON.stringify(result.data.user));
+      window.location.assign("/");
+    } else {
+      alert("Kullanıcı adı ya da şifre hatalı!");
+    }
   }
 
   return (
