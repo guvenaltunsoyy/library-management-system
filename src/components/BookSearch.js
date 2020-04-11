@@ -3,6 +3,7 @@ import axios from "axios";
 import Title from "./Title";
 import { Link } from "react-router-dom";
 import Banner from "./Banner";
+import InfoModal from "./InfoModal";
 
 const _url = "http://lib-mng-server.herokuapp.com/api/getBooks";
 
@@ -24,10 +25,19 @@ export default class BookSearch extends Component {
       tempBooks: [],
       searchBookName: "",
       searchIsbnNumber: "",
+      showInfoModal: false,
+      loginRequired: true,
+      modal: {
+        title: "",
+        subtitle: "",
+        text: "",
+      },
     };
     this.getBooks();
   }
-
+  componentDidUpdate() {
+    //console.log(this.state);
+  }
   async getBooks() {
     var res = await axios.get(_url);
     if (res && res.data.success) {
@@ -38,6 +48,19 @@ export default class BookSearch extends Component {
       });
     }
   }
+
+  assignBook = (event) => {
+    var userId = JSON.parse(sessionStorage.getItem("user"))?._id;
+    if (userId === undefined || userId === null) {
+      this.state.modal.text = "Kitap alabilmek için giriş yapmanız gerekmekte.";
+      this.state.modal.title = "Giriş Yapın";
+    } else {
+      this.state.modal.text = "Yihhuuuuuuu.";
+      this.state.modal.title = "yesssss";
+    }
+    this.showInfoModal();
+  };
+
   searchWithBookName = (event) => {
     this.setState({
       ...this.state,
@@ -71,6 +94,10 @@ export default class BookSearch extends Component {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
   };
+  showInfoModal = () => {
+    var toggle = this.state.showInfoModal;
+    this.setState({ ...this.state, showInfoModal: !toggle });
+  };
   renderTableData = () => {
     return this.state.books.map((book, index) => {
       const { _id, title, author, quantity, isbnNumber } = book;
@@ -81,9 +108,9 @@ export default class BookSearch extends Component {
           <td>{quantity}</td>
           <td>{isbnNumber}</td>
           <td>
-            <Link to={`/borrow/book/${_id}`} className="btn-primary">
+            <button id={_id} onClick={this.assignBook} className="btn-primary">
               Kitap Al
-            </Link>
+            </button>
           </td>
         </tr>
       );
@@ -119,6 +146,13 @@ export default class BookSearch extends Component {
             Temizle
           </button>
         </Banner>
+        <InfoModal
+          show={this.state.showInfoModal}
+          onHide={this.showInfoModal}
+          title={this.state.modal.title}
+          subtitle={this.state.modal.subTitle}
+          text={this.state.modal.text}
+        />
         <section className="services">
           <Title title="Kitaplar" />
           <div className="services-center">
