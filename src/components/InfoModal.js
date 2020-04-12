@@ -13,7 +13,7 @@ export default function InfoModal(props) {
     setText(props.text ?? "Sitemize hoşgeldiniz...");
     setSubTitle(props.subTitle ?? "");
     setCloseButtonText(props.closeButtonText ?? "Kapat");
-  });
+  }, [props]);
   return (
     <Modal
       {...props}

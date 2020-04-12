@@ -48,6 +48,12 @@ export default class NavBar extends Component {
             ) : (
               <p></p>
             )}
+            {this.state.user && !this.state.user.isManager && (
+              <li>
+                <Link to="/profile">Profilim</Link>
+              </li>
+            )}
+
             {this.state.user ? (
               <>
                 <li style={{ alignSelf: "center" }} className="room-info">
@@ -60,7 +66,6 @@ export default class NavBar extends Component {
                     style={{
                       marginLeft: 10,
                       marginTop: 5,
-                      alignSelf: "center",
                     }}
                   >
                     Çıkış Yap

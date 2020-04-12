@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Title from "./Title";
-import { Link } from "react-router-dom";
 import Banner from "./Banner";
 import InfoModal from "./InfoModal";
+import API from "../utils/api";
 
 const _url = "http://lib-mng-server.herokuapp.com/api/getBooks";
 
@@ -49,14 +49,24 @@ export default class BookSearch extends Component {
     }
   }
 
-  assignBook = (event) => {
+  assignBook = async (event) => {
     var userId = JSON.parse(sessionStorage.getItem("user"))?._id;
     if (userId === undefined || userId === null) {
       this.state.modal.text = "Kitap alabilmek için giriş yapmanız gerekmekte.";
       this.state.modal.title = "Giriş Yapın";
     } else {
-      this.state.modal.text = "Yihhuuuuuuu.";
-      this.state.modal.title = "yesssss";
+      var result = await API.post("assign/book", {
+        userId: userId,
+        bookId: event.target.id,
+        date: new Date(),
+      });
+      if (result.data.result) {
+        this.state.modal.title = "Kitap Alımı Başarılı";
+        this.state.modal.text = result.data.message;
+      } else {
+        this.state.modal.title = "Kitap Alımı Başarısız";
+        this.state.modal.text = result.data.message;
+      }
     }
     this.showInfoModal();
   };
@@ -158,7 +168,12 @@ export default class BookSearch extends Component {
           <div className="services-center">
             <table id="students">
               <tbody>
-                <tr>{this.renderTableHeader()}</tr>
+                <tr>
+                  <th key="1">KİTAP ADI</th>
+                  <th key="2">YAZAR ADI</th>
+                  <th key="3">ADET</th>
+                  <th key="4">ISBN NUMARASI</th>
+                </tr>
                 {this.renderTableData()}
               </tbody>
             </table>

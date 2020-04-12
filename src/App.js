@@ -5,6 +5,7 @@ import AddBook from "./pages/AddBook";
 import NavBar from "./components/NavBar";
 import { Route, Switch } from "react-router-dom";
 import User from "./pages/User";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/add/book" component={AddBook} />
         <Route exact path="/assign/book/" component={Home} />
         <Route exact path="/login/user" component={User} />
+        <Route exact path="/profile" component={Profile} />
       </Switch>
     </>
   );
