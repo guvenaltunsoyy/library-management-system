@@ -16,7 +16,7 @@ export default function MyTable(props) {
 
   async function GiveBook(event) {
     let selectedBook = arr.filter(
-      (x) => x.assignedBookId == event.target.id
+      (x) => x.assignedBookId === event.target.id
     )[0];
     var res = await API.post("give/book", {
       bookId: selectedBook._id,
@@ -25,7 +25,7 @@ export default function MyTable(props) {
     if (res && res.data.success) {
       setShowModal(true);
       arr.filter(
-        (x) => x.assignedBookId == selectedBook.assignedBookId
+        (x) => x.assignedBookId === selectedBook.assignedBookId
       )[0].isReceipt = true;
     }
   }
