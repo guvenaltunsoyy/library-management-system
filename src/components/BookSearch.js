@@ -69,6 +69,7 @@ export default class BookSearch extends Component {
       }
     }
     this.showInfoModal();
+    await this.getBooks();
   };
 
   searchWithBookName = (event) => {

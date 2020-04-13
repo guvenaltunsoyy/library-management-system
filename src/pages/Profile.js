@@ -35,6 +35,8 @@ export default function Profile() {
             author: temp.author,
             isbnNumber: temp.isbnNumber,
             createdAt: assigned.createdAt,
+            assignedBookId: assigned._id,
+            isReceipt: assigned.isReceipt,
           });
         }
       });
