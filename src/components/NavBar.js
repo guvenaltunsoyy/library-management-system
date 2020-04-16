@@ -42,9 +42,14 @@ export default class NavBar extends Component {
             className={this.state.isOpen ? "nav-links show-nav" : "nav-links"}
           >
             {this.state.user?.isManager ? (
-              <li>
-                <Link to="/add/book">Kitap ekle </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/add/book">Kitap ekle </Link>
+                </li>
+                <li>
+                  <Link to="/getBooksAsManager">Kim Ne Almış </Link>
+                </li>
+              </>
             ) : (
               <p></p>
             )}

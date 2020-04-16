@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Banner from "../components/Banner";
 import API from "../utils/api";
 import InfoModal from "../components/InfoModal";
 
