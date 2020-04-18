@@ -158,9 +158,9 @@ export default class BookSearch extends Component {
                     <td>{quantity}</td>
                     <td>{isbnNumber}</td>
                     <td>
-                        <button id={_id} onClick={this.assignBook} className="btn-primary">
+                        {quantity > 0 ? <button id={_id} onClick={this.assignBook} className="btn-primary">
                             Kitap Al
-                        </button>
+                        </button> : <p>Stok yetersiz</p>}
                     </td>
                 </tr>
             );

@@ -114,9 +114,9 @@ export default class NavBar extends Component {
                                     <Link to="/login/user">Kullanıcı girişi</Link>
                                 </li>
                             )}
-                            <li style={{marginLeft: 10}}>
+                            {this.state?.user?.isManager && <li style={{marginLeft: 10}}>
                                 {this.getDate()}
-                            </li>
+                            </li>}
                         </ul>
                     </div>
                 </nav>
