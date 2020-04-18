@@ -32,6 +32,8 @@ export default class BookSearch extends Component {
         subtitle: "",
         text: "",
       },
+      rows: 3,
+      cols: 1,
     };
     this.getBooks();
   }
@@ -71,7 +73,43 @@ export default class BookSearch extends Component {
     this.showInfoModal();
     await this.getBooks();
   };
-
+  getIsbnNumberFromImage = (event) => {
+    if (event.target.files[0]) {
+      for (var key in event.target.files) {
+        if (!event.target.files.hasOwnProperty(key)) continue;
+        let upload = event.target.files[key];
+        this.toDataURL(URL.createObjectURL(upload)).then((dataUrl) => {
+          axios
+            .post("http://localhost:3001/api/getNumber", {
+              base64: dataUrl.split(",")[1],
+              rows: this.state.rows,
+              cols: this.state.cols,
+            })
+            .then((res) => {
+              if (res?.data?.isbnNumber) {
+                localStorage.setItem("isbnNumber", res?.data?.isbnNumber);
+                this.refs.inputIsbn.value = res?.data?.isbnNumber;
+                this.searchWithIsbnNumber(res.data.isbnNumber);
+              } else {
+                alert("ISBN numarası okunamadı.");
+              }
+            });
+        });
+      }
+    }
+  };
+  toDataURL = (url) =>
+    fetch(url)
+      .then((response) => response.blob())
+      .then(
+        (blob) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
   searchWithBookName = (event) => {
     this.setState({
       ...this.state,
@@ -80,11 +118,11 @@ export default class BookSearch extends Component {
       ),
     });
   };
-  searchWithIsbnNumber = (event) => {
+  searchWithIsbnNumber = (isbn) => {
     this.setState({
       ...this.state,
       books: this.state.tempBooks.filter((book) =>
-        book.isbnNumber.toLowerCase().includes(event.target.value.toLowerCase())
+        book.isbnNumber.toLowerCase().includes(isbn.toLowerCase())
       ),
     });
   };
@@ -108,6 +146,9 @@ export default class BookSearch extends Component {
   showInfoModal = () => {
     var toggle = this.state.showInfoModal;
     this.setState({ ...this.state, showInfoModal: !toggle });
+  };
+  clickFileInput = () => {
+    document.getElementById("fileUploader").click();
   };
   renderTableData = () => {
     return this.state.books.map((book, index) => {
@@ -148,14 +189,53 @@ export default class BookSearch extends Component {
             type="text"
             className="size-input"
             ref="inputIsbn"
+            id="isbnNumber"
             placeholder="Isbn numarası giriniz"
             onChange={(event) => {
-              this.searchWithIsbnNumber(event);
+              this.searchWithIsbnNumber(event.target.value);
             }}
           />
-          <button onClick={this.cleanTable} className="btn-primary">
+
+          <button
+            onClick={this.cleanTable}
+            className="btn-primary"
+            style={{ marginLeft: 10 }}
+          >
             Temizle
           </button>
+          <br />
+          <input
+            type="text"
+            onChange={(event) => {
+              this.state.rows = event.target.value;
+            }}
+            style={{ marginLeft: 52 }}
+            className="size-input"
+            placeholder="Satır, Örnek -> 3"
+          />
+          <input
+            type="text"
+            className="size-input"
+            id="isbnNumber"
+            placeholder="Sütun, Örnek -> 1"
+            onChange={(event) => {
+              this.state.cols = event.target.value;
+            }}
+          />
+          <button
+            className="btn-primary"
+            style={{ marginLeft: 10 }}
+            onClick={this.clickFileInput}
+          >
+            Fotoğraf Seç
+          </button>
+          <input
+            type="file"
+            style={{ visibility: "hidden" }}
+            id="fileUploader"
+            placeholder="Fotoğraf seç"
+            onChange={this.getIsbnNumberFromImage}
+          />
         </Banner>
         <InfoModal
           show={this.state.showInfoModal}
@@ -167,17 +247,21 @@ export default class BookSearch extends Component {
         <section className="services">
           <Title title="Kitaplar" />
           <div className="services-center">
-            <table id="students">
-              <tbody>
-                <tr>
-                  <th key="1">KİTAP ADI</th>
-                  <th key="2">YAZAR ADI</th>
-                  <th key="3">ADET</th>
-                  <th key="4">ISBN NUMARASI</th>
-                </tr>
-                {this.renderTableData()}
-              </tbody>
-            </table>
+            {this.state.books.length == 0 ? (
+              "Kitap bulunamadı"
+            ) : (
+              <table id="students">
+                <tbody>
+                  <tr>
+                    <th key="1">KİTAP ADI</th>
+                    <th key="2">YAZAR ADI</th>
+                    <th key="3">ADET</th>
+                    <th key="4">ISBN NUMARASI</th>
+                  </tr>
+                  {this.renderTableData()}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
       </>

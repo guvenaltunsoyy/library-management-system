@@ -14,7 +14,6 @@ export default function MyTable() {
 
   async function GetBooks() {
     var result = await API.get("getBooksAsManager");
-    console.log(result?.data);
     setArr(result.data.usersWithBooks);
   }
 
@@ -24,10 +23,10 @@ export default function MyTable() {
         <table id="students">
           <tbody>
             <tr>
-              <th key="1">KİTAP ADI</th>
-              <th key="2">YAZAR ADI</th>
-              <th key="3">KULLANICI ADI</th>
-              <th key="3">GEÇEN GÜN SAYISI</th>
+              <th key="1232131">KİTAP ADI</th>
+              <th key="2123213">YAZAR ADI</th>
+              <th key="1231233">KULLANICI ADI</th>
+              <th key="131233">GEÇEN GÜN SAYISI</th>
             </tr>
             {arr.map((row, index) => {
               const { user, book, createdAt } = row;

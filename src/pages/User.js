@@ -11,8 +11,6 @@ export default function User() {
       mail: username,
       password: password,
     });
-    console.log(result);
-
     if (result.data.user) {
       //alert("Hoşgeldiniz!");
       sessionStorage.setItem("user", JSON.stringify(result.data.user));
