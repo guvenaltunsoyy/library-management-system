@@ -22,6 +22,7 @@ export default function Profile() {
     var res = await API.get("getAssignedBooks");
     var res2 = await API.get("getBooks");
     if (res && res.data.success && res2 && res2.data.success) {
+      //eslint-disable-next-line
       res.data.assignedBooks.map((assigned) => {
         if (
           assigned.userId === JSON.parse(sessionStorage.getItem("user"))?._id
