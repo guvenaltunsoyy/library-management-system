@@ -21,8 +21,6 @@ export default function MyTable() {
         return diffDays;
     }
 
-    //eslint-disable-next-line
-
 
     return (
         <div className="services">

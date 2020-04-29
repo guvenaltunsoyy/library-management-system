@@ -79,6 +79,9 @@ export default class NavBar extends Component {
                                     <li>
                                         <Link to="/getBooksAsManager">Kim Ne Almış </Link>
                                     </li>
+                                    <li>
+                                        <Link to="/users">Kullanıcılar </Link>
+                                    </li>
                                 </>
                             ) : (
                                 <p/>
